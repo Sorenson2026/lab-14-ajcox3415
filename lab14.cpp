@@ -6,8 +6,10 @@ AJ Cox
 #include <iostream>
 using namespace std;
 
-int EnterScores(int* pointer, int size);
-int SortFunction(int* pointer, int size);
+void EnterScores(int* pointer, int size);
+void SortFunction(int* pointer, int size);
+void swap(int& a, int& b);
+void average(int* pointer, int size);
 
 int main()
 {
@@ -21,25 +23,37 @@ int main()
 	EnterScores(testptr, size);
 	SortFunction(testptr, size);
 	
+	cout << endl << "Here are the test scores sorted in assending order: " << endl;
+
 	for (int i = 0; i < size; i++)
-		cout << *(testptr + i) << endl;
+		cout << *(testptr + i) << " ";
+
+	average(testptr, size);
 
 
 	delete[] testptr;
 }
 
 // EnterScores lets the user input thier test scores.
-int EnterScores(int* pointer, int size)
+void EnterScores(int* pointer, int size)
 {
 	for (int i = 0; i < size; i++)
 	{
-		cout << "Enter test score #" << i + 1 << ": ";
+		cout << "Enter test score # " << i + 1 << " (Please no negitives): ";
 		cin >> *(pointer + i);
+
+		//Input Validiation
+		if (*(pointer + i) < 0)
+		{
+			cout << "PLease no negitives. Try again: ";
+			cin >> *(pointer + i);
+		}
 	}
-	return *pointer;
+	
 }
 
-int SortFunction(int* pointer, int size)
+//This function will sort the scores useing selectin sort.
+void SortFunction(int* pointer, int size)
 {
 	int minIndex, minValue;
 
@@ -47,15 +61,40 @@ int SortFunction(int* pointer, int size)
 	{
 		minIndex = i;
 		minValue = *(pointer + i);
+
 		for (int j = i + 1; j < size; j++)
 		{
-			if (*(pointer + i) < minValue)
+			if (*(pointer + j) < minValue)
 			{
 
-				minValue = *(pointer + j);
+				minValue = *(pointer + j); 
 				minIndex = j;
 			}
 		}
-		swap()
+		//Calls swap function
+		swap(*(pointer + minIndex), *(pointer + i));
 	}
+	
+}
+
+// This will swap the scores.
+void swap(int& a, int& b)
+{
+	int temp = a;
+	a = b;
+	b = temp;
+}
+
+void average(int* pointer, int size)
+{
+	float total = 0.0;
+	float average;
+
+	for (int i = 0; i < size; i++)
+	{
+		total += *(pointer + i);
+	}
+	average = total / size;
+
+	cout << endl << endl << "The average test score is: " << average << endl;
 }
